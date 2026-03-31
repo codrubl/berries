@@ -86,7 +86,7 @@ const translations = {
     post_not_found: 'Postarea nu a fost găsită',
     post_donate_title: 'Donează crypto direct către {username}',
     post_donate_desc: 'Trimite o donație crypto direct în portofelul creatorului.',
-    post_donate_soon: '💰 Donează (în curând)',
+    post_donate_soon: '💸 Donează (în curând)',
  
     comments_title: 'Comentarii',
     comments_placeholder: 'Scrie un comentariu...',
@@ -162,6 +162,10 @@ const translations = {
     not_found: 'Pagina nu a fost găsită',
  
     lang_switch: '🇬🇧 English',
+
+    success_user_deleted_admin: 'Utilizatorul a fost șters de administrator',
+    admin_delete_user: 'Șterge utilizator (Admin)',
+    admin_delete_user_confirm: 'Ești sigur că vrei să ștergi utilizatorul "{username}"? Toate postările, comentariile și datele acestuia vor fi șterse permanent.',
  
     err_username_required: 'Username-ul este obligatoriu',
     err_username_min: 'Username-ul trebuie să aibă cel puțin 3 caractere',
@@ -203,6 +207,8 @@ const translations = {
     err_server_delete_comment: 'Eroare la ștergerea comentariului',
     err_server_update_post: 'Eroare la actualizarea postării',
     err_invalid: 'Format invalid',
+    err_not_admin: 'Această acțiune necesită drepturi de administrator',
+    err_admin_self_delete: 'Nu îți poți șterge propriul cont prin panoul de admin',
   },
  
   en: {
@@ -288,7 +294,7 @@ const translations = {
     post_not_found: 'Post not found',
     post_donate_title: 'Donate crypto directly to {username}',
     post_donate_desc: 'Send a crypto donation directly to the creator\'s wallet.',
-    post_donate_soon: '💰 Donate (coming soon)',
+    post_donate_soon: '💸 Donate (coming soon)',
  
     comments_title: 'Comments',
     comments_placeholder: 'Write a comment...',
@@ -364,6 +370,10 @@ const translations = {
     not_found: 'Page not found',
  
     lang_switch: '🇷🇴 Română',
+
+    success_user_deleted_admin: 'User has been deleted by administrator',
+    admin_delete_user: 'Delete user (Admin)',
+    admin_delete_user_confirm: 'Are you sure you want to delete user "{username}"? All their posts, comments and data will be permanently deleted.',
  
     err_username_required: 'Username is required',
     err_username_min: 'Username must be at least 3 characters',
@@ -405,6 +415,8 @@ const translations = {
     err_server_delete_comment: 'Error deleting comment',
     err_server_update_post: 'Error updating post',
     err_invalid: 'Invalid format',
+    err_not_admin: 'This action requires administrator privileges',
+    err_admin_self_delete: 'You cannot delete your own account through the admin panel',
   }
 };
  

@@ -24,6 +24,8 @@ export default function PostCard({ post, onDelete }) {
   const { t } = useLanguage();
   const timeAgo = useTimeAgo();
   const isOwner = user && post.author && user._id === post.author._id;
+  const isAdmin = user?.isAdmin;
+  const canDelete = isOwner || isAdmin;
  
   const handleDelete = async () => {
     if (!window.confirm(t('post_delete_confirm'))) return;
@@ -88,7 +90,7 @@ export default function PostCard({ post, onDelete }) {
             💸 {t('post_donate')}
           </Link>
         )}
-        {isOwner && (
+        {canDelete && (
           <button onClick={handleDelete} className="btn btn--ghost btn--small"
             style={{ marginLeft: 'auto', color: 'var(--error)' }}>
             🗑 {t('post_delete')}

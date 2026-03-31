@@ -65,7 +65,7 @@ router.get('/', optionalAuth, async (req, res) => {
         totalPosts: total
       });
     } else {
-      // Feed cronologic
+      // No interests: pure chronological feed
       posts = await Post.find()
         .sort({ createdAt: -1 })
         .skip(skip)
@@ -169,7 +169,7 @@ router.put('/:id', auth, async (req, res) => {
     res.status(500).json({ message: 'err_server_update_post' });
   }
 });
- 
+
 router.delete('/:id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -178,7 +178,10 @@ router.delete('/:id', auth, async (req, res) => {
       return res.status(404).json({ message: 'err_post_not_found' });
     }
  
-    if (post.author.toString() !== req.userId.toString()) {
+    const isOwner = post.author.toString() === req.userId.toString();
+    const isAdmin = req.user.isAdmin;
+ 
+    if (!isOwner && !isAdmin) {
       return res.status(403).json({ message: 'err_not_authorized_post' });
     }
  

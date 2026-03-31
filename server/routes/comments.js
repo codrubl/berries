@@ -62,7 +62,10 @@ router.delete('/:commentId', auth, async (req, res) => {
       return res.status(404).json({ message: 'err_comment_not_found' });
     }
  
-    if (comment.author.toString() !== req.userId.toString()) {
+    const isOwner = comment.author.toString() === req.userId.toString();
+    const isAdmin = req.user.isAdmin;
+ 
+    if (!isOwner && !isAdmin) {
       return res.status(403).json({ message: 'err_not_authorized_comment' });
     }
  

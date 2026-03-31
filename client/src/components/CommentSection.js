@@ -107,7 +107,7 @@ export default function CommentSection({ postId, comments: initialComments }) {
                 <div className="comment__header">
                   <span className="comment__author">{comment.author?.username}</span>
                   <span className="comment__time">{timeAgo(comment.createdAt)}</span>
-                  {user && comment.author && user._id === comment.author._id && (
+                  {user && comment.author && (user._id === comment.author._id || user.isAdmin) && (
                     <button
                       onClick={() => handleDelete(comment._id)}
                       className="btn btn--ghost btn--small"

@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import Avatar from '../components/Avatar';
 import PostCard from '../components/PostCard';
-
+ 
 const API_BASE = process.env.REACT_APP_API_URL || '';
-
+ 
 export default function UserProfile() {
   const { id } = useParams();
+  const { user, token } = useAuth();
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [profileUser, setProfileUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
   const [activeTab, setActiveTab] = useState('posts');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
+ 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -24,13 +27,13 @@ export default function UserProfile() {
           fetch(`${API_BASE}/api/posts/user/${id}`),
           fetch(`${API_BASE}/api/comments/user/${id}`)
         ]);
-
+ 
         const userData = await userRes.json();
         const postsData = await postsRes.json();
         const commentsData = await commentsRes.json();
-
+ 
         if (!userRes.ok) throw new Error(userData.message);
-
+ 
         setProfileUser(userData.user);
         setPosts(postsData.posts || []);
         setComments(commentsData.comments || []);
@@ -39,11 +42,11 @@ export default function UserProfile() {
     };
     fetchProfile();
   }, [id]);
-
+ 
   const handleDelete = (postId) => setPosts(posts.filter(p => p._id !== postId));
-
+ 
   if (loading) return <div className="page-container"><div className="loading-spinner"><div className="loading-spinner__circle" /></div></div>;
-
+ 
   if (error || !profileUser) {
     return (
       <div className="page-container">
@@ -55,11 +58,11 @@ export default function UserProfile() {
       </div>
     );
   }
-
+ 
   return (
     <div className="page-container">
       <Link to="/feed" className="btn btn--ghost" style={{ marginBottom: 'var(--space-lg)' }}>{t('post_back')}</Link>
-
+ 
       <div className="account-header">
         <Avatar username={profileUser.username} avatarUrl={profileUser.avatarUrl} size={100} className="account-avatar" />
         <div className="account-info">
@@ -72,7 +75,32 @@ export default function UserProfile() {
           )}
         </div>
       </div>
-
+ 
+      {user?.isAdmin && (
+        <div style={{ marginBottom: 'var(--space-lg)' }}>
+          <button
+            className="btn btn--danger btn--small"
+            onClick={async () => {
+              if (!window.confirm(t('admin_delete_user_confirm', { username: profileUser.username }))) return;
+              try {
+                const res = await fetch(`${API_BASE}/api/auth/admin/user/${id}`, {
+                  method: 'DELETE',
+                  headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message);
+                navigate('/feed');
+              } catch (err) {
+                alert(t(err.message));
+              }
+            }}
+          >
+            🛡 {t('admin_delete_user')}
+          </button>
+        </div>
+      )}
+ 
+      {/* Bio & Wallet info card */}
       {(profileUser.bio || profileUser.walletAddress) && (
         <div className="card" style={{ marginBottom: 'var(--space-2xl)' }}>
           <div className="card__body">
@@ -95,7 +123,7 @@ export default function UserProfile() {
           </div>
         </div>
       )}
-
+ 
       <div style={{ display: 'flex', gap: 'var(--space-md)', marginBottom: 'var(--space-lg)', borderBottom: '2px solid var(--ink-100)', paddingBottom: 'var(--space-sm)' }}>
         <button
           className="btn btn--ghost"
@@ -122,7 +150,7 @@ export default function UserProfile() {
           {t('user_comments')} ({comments.length})
         </button>
       </div>
-
+ 
       {activeTab === 'posts' && (
         posts.length === 0 ? (
           <div className="empty-state"><p>{t('user_no_posts')}</p></div>
@@ -130,7 +158,7 @@ export default function UserProfile() {
           posts.map((post) => <PostCard key={post._id} post={post} onDelete={handleDelete} />)
         )
       )}
-
+ 
       {activeTab === 'comments' && (
         comments.length === 0 ? (
           <div className="empty-state"><p>{t('user_no_comments')}</p></div>

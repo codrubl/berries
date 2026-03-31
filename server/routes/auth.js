@@ -120,7 +120,7 @@ router.put('/interests', auth, async (req, res) => {
   try {
     const { interests } = req.body;
     if (!Array.isArray(interests)) {
-      return res.status(400).json({ message: 'err_invalid' });
+      return res.status(400).json({ message: 'err_invalid_interests' });
     }
  
     const user = await User.findByIdAndUpdate(
@@ -208,6 +208,59 @@ router.get('/user/:id', async (req, res) => {
     res.json({ user });
   } catch (error) {
     res.status(500).json({ message: 'err_server_profile' });
+  }
+});
+ 
+router.get('/admin/users', auth, async (req, res) => {
+  try {
+    if (!req.user.isAdmin) {
+      return res.status(403).json({ message: 'err_not_admin' });
+    }
+ 
+    const users = await User.find().select('-password').sort({ createdAt: -1 });
+    res.json({ users });
+  } catch (error) {
+    res.status(500).json({ message: 'err_server_profile' });
+  }
+});
+ 
+router.delete('/admin/user/:id', auth, async (req, res) => {
+  try {
+    if (!req.user.isAdmin) {
+      return res.status(403).json({ message: 'err_not_admin' });
+    }
+ 
+    const targetId = req.params.id;
+ 
+    if (targetId === req.userId.toString()) {
+      return res.status(400).json({ message: 'err_admin_self_delete' });
+    }
+ 
+    await Comment.deleteMany({ author: targetId });
+ 
+    const userPosts = await Post.find({ author: targetId }).select('_id imageUrl');
+    const postIds = userPosts.map(p => p._id);
+    await Comment.deleteMany({ post: { $in: postIds } });
+ 
+    for (const post of userPosts) {
+      if (post.imageUrl) {
+        const imgPath = path.join(__dirname, '..', post.imageUrl);
+        if (fs.existsSync(imgPath)) fs.unlinkSync(imgPath);
+      }
+    }
+    await Post.deleteMany({ author: targetId });
+ 
+    const targetUser = await User.findById(targetId);
+    if (targetUser && targetUser.avatarUrl) {
+      const avatarPath = path.join(__dirname, '..', targetUser.avatarUrl);
+      if (fs.existsSync(avatarPath)) fs.unlinkSync(avatarPath);
+    }
+ 
+    await User.findByIdAndDelete(targetId);
+ 
+    res.json({ message: 'success_user_deleted_admin' });
+  } catch (error) {
+    res.status(500).json({ message: 'err_server_delete_account' });
   }
 });
  
