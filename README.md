@@ -1,2 +1,2 @@
 # berries
-Project - Social Media Website
+Social Media Website
