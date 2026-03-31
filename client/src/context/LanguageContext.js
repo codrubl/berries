@@ -164,7 +164,7 @@ const translations = {
     lang_switch: '🇬🇧 English',
 
     success_user_deleted_admin: 'Utilizatorul a fost șters de administrator',
-    admin_delete_user: 'Șterge utilizator (Admin)',
+    admin_delete_user: '(Admin) - Șterge contul de utilizator',
     admin_delete_user_confirm: 'Ești sigur că vrei să ștergi utilizatorul "{username}"? Toate postările, comentariile și datele acestuia vor fi șterse permanent.',
  
     err_username_required: 'Username-ul este obligatoriu',
@@ -372,7 +372,7 @@ const translations = {
     lang_switch: '🇷🇴 Română',
 
     success_user_deleted_admin: 'User has been deleted by administrator',
-    admin_delete_user: 'Delete user (Admin)',
+    admin_delete_user: '(Admin) - Delete user account',
     admin_delete_user_confirm: 'Are you sure you want to delete user "{username}"? All their posts, comments and data will be permanently deleted.',
  
     err_username_required: 'Username is required',

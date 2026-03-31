@@ -95,7 +95,7 @@ export default function UserProfile() {
               }
             }}
           >
-            🛡 {t('admin_delete_user')}
+            ⛔ {t('admin_delete_user')}
           </button>
         </div>
       )}
