@@ -8,7 +8,7 @@ const API_BASE = process.env.REACT_APP_API_URL || '';
  
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuth();
-  const { t, toggleLanguage } = useLanguage();
+  const { t, toggleLanguage, theme, toggleTheme } = useLanguage();
   const location = useLocation();
  
   const isActive = (path) => location.pathname === path;
@@ -22,6 +22,9 @@ export default function Navbar() {
         </Link>
  
         <div className="navbar__links">
+          <button onClick={toggleTheme} className="navbar__link" title="Toggle theme">
+            {theme === 'light' ? t('nav_theme_dark') : t('nav_theme_light')}
+          </button>
           <button onClick={toggleLanguage} className="navbar__link" title="Switch language">
             {t('lang_switch')}
           </button>
@@ -33,10 +36,10 @@ export default function Navbar() {
           {isAuthenticated ? (
             <>
               <Link to="/create" className={`navbar__link ${isActive('/create') ? 'navbar__link--active' : ''}`}>
-                ✦ <span>{t('nav_new_post')}</span>
+                ✎ <span>{t('nav_new_post')}</span>
               </Link>
               <Link to="/chatbot" className={`navbar__link ${isActive('/chatbot') ? 'navbar__link--active' : ''}`}>
-                ✦ <span>{t('nav_chatbot')}</span>
+                ⚙️ <span>{t('nav_chatbot')}</span>
               </Link>
               <Link to="/account" className={`navbar__link ${isActive('/account') ? 'navbar__link--active' : ''}`}>
                 {user?.avatarUrl ? (

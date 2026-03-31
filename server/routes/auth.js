@@ -120,7 +120,7 @@ router.put('/interests', auth, async (req, res) => {
   try {
     const { interests } = req.body;
     if (!Array.isArray(interests)) {
-      return res.status(400).json({ message: 'err_invalid_interests' });
+      return res.status(400).json({ message: 'err_invalid' });
     }
  
     const user = await User.findByIdAndUpdate(

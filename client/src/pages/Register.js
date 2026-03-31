@@ -38,12 +38,12 @@ export default function Register() {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="form-label" htmlFor="username">{t('register_username')}</label>
-            <input id="username" type="text" className="form-input" placeholder="numele_tau"
+            <input id="username" type="text" className="form-input" placeholder="berries"
               value={username} onChange={(e) => setUsername(e.target.value)} minLength={3} maxLength={30} required />
           </div>
           <div className="form-group">
             <label className="form-label" htmlFor="email">{t('register_email')}</label>
-            <input id="email" type="email" className="form-input" placeholder="adresa@email.com"
+            <input id="email" type="email" className="form-input" placeholder="berries@email.com"
               value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
           <div className="form-group">

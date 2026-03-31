@@ -41,18 +41,15 @@ router.get('/', optionalAuth, async (req, res) => {
     let posts;
     const populateFields = 'username avatarUrl walletAddress';
  
-    // User logat cu interese
     if (req.user && req.user.interests && req.user.interests.length > 0) {
       const userInterests = req.user.interests;
  
-      // Posturi bazate pe interese, cronologice
       const matchingPosts = await Post.find({ tags: { $in: userInterests } })
         .sort({ createdAt: -1 })
         .populate('author', populateFields);
  
       const matchingIds = matchingPosts.map(p => p._id);
  
-      // Alte posturi, cronologice
       const otherPosts = await Post.find({ _id: { $nin: matchingIds } })
         .sort({ createdAt: -1 })
         .populate('author', populateFields);
@@ -68,7 +65,7 @@ router.get('/', optionalAuth, async (req, res) => {
         totalPosts: total
       });
     } else {
-      // Pt feed cronologic
+      // Feed cronologic
       posts = await Post.find()
         .sort({ createdAt: -1 })
         .skip(skip)
@@ -144,6 +141,32 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
       return res.status(400).json({ message: messages.join('. ') });
     }
     res.status(500).json({ message: 'err_server_create_post' });
+  }
+});
+ 
+router.put('/:id', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+ 
+    if (!post) {
+      return res.status(404).json({ message: 'err_post_not_found' });
+    }
+ 
+    if (post.author.toString() !== req.userId.toString()) {
+      return res.status(403).json({ message: 'err_not_authorized_post' });
+    }
+ 
+    const { tags } = req.body;
+    if (tags !== undefined) {
+      post.tags = Array.isArray(tags) ? tags : [];
+    }
+ 
+    await post.save();
+    await post.populate('author', 'username avatarUrl walletAddress');
+ 
+    res.json({ post });
+  } catch (error) {
+    res.status(500).json({ message: 'err_server_update_post' });
   }
 });
  

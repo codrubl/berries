@@ -45,6 +45,7 @@ export default function Chatbot() {
   const messagesEndRef = useRef(null);
  
   useEffect(() => {
+    // Initial bot message
     const initial = [
       { from: 'bot', text: t('chatbot_greeting') },
     ];
@@ -83,9 +84,11 @@ export default function Chatbot() {
     setMessages(prev => [...prev, { from: 'user', text: userText }]);
     setInput('');
  
+    // Parse interests from text
     const found = parseInterestsFromText(userText);
  
     if (found.length > 0) {
+      // Add found interests
       setSelectedInterests(prev => {
         const combined = [...new Set([...prev, ...found])];
         return combined;
@@ -132,8 +135,9 @@ export default function Chatbot() {
         {t('chatbot_description')}
       </p>
  
+      {/* Chat messages */}
       <div style={{
-        background: 'white',
+        background: 'var(--ink-50)',
         borderRadius: 'var(--radius-lg)',
         border: '1px solid var(--ink-100)',
         padding: 'var(--space-lg)',
@@ -166,6 +170,7 @@ export default function Chatbot() {
         <div ref={messagesEndRef} />
       </div>
  
+      {/* Tag selection buttons */}
       <div style={{ marginBottom: 'var(--space-lg)' }}>
         <p style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--ink-600)', marginBottom: 'var(--space-sm)' }}>
           {t('chatbot_select_tags')}
@@ -179,7 +184,7 @@ export default function Chatbot() {
                 padding: '0.4rem 0.9rem',
                 borderRadius: 'var(--radius-full)',
                 border: selectedInterests.includes(tag) ? '2px solid var(--berry-500)' : '2px solid var(--ink-200)',
-                background: selectedInterests.includes(tag) ? 'var(--berry-50)' : 'white',
+                background: selectedInterests.includes(tag) ? 'var(--berry-50)' : 'var(--ink-50)',
                 color: selectedInterests.includes(tag) ? 'var(--berry-700)' : 'var(--ink-600)',
                 fontSize: '0.85rem',
                 fontWeight: selectedInterests.includes(tag) ? 600 : 400,
@@ -193,6 +198,7 @@ export default function Chatbot() {
         </div>
       </div>
  
+      {/* Text input */}
       <div style={{ display: 'flex', gap: 'var(--space-sm)', marginBottom: 'var(--space-lg)' }}>
         <input
           type="text"
@@ -208,6 +214,7 @@ export default function Chatbot() {
         </button>
       </div>
  
+      {/* Save / Clear */}
       <div style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'center' }}>
         <button className="btn btn--primary" onClick={handleSave} disabled={saving}>
           {saving ? t('account_saving') : t('chatbot_save_interests')}
@@ -222,6 +229,7 @@ export default function Chatbot() {
         )}
       </div>
  
+      {/* Current interests display */}
       {user?.interests?.length > 0 && (
         <div style={{
           marginTop: 'var(--space-xl)',

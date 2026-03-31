@@ -85,7 +85,7 @@ export default function PostCard({ post, onDelete }) {
         </Link>
         {post.author?.walletAddress && (
           <Link to={`/post/${post._id}`} className="btn btn--ghost btn--small">
-            💰 {t('post_donate')}
+            💸 {t('post_donate')}
           </Link>
         )}
         {isOwner && (

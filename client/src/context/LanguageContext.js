@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
  
 const LanguageContext = createContext(null);
  
@@ -9,7 +9,9 @@ const translations = {
     nav_logout: 'Delogare',
     nav_login: 'Autentificare',
     nav_register: 'Creează cont',
-    nav_chatbot: 'Asistent AI',
+    nav_chatbot: 'Personalizează',
+    nav_theme_light: '☀️ Luminos',
+    nav_theme_dark: '🌙 Întunecat',
  
     landing_title: 'Berries',
     landing_subtitle: 'O platformă socială diferită, fără algoritmi de manipulat.',
@@ -52,6 +54,7 @@ const translations = {
     feed_empty: 'Nu există postări încă. Fii primul care publică ceva!',
     feed_prev: '← Anterioare',
     feed_next: 'Următoare →',
+    feed_filtered_by: 'Personalizat pentru interesele tale',
  
     post_comments: 'Comentarii',
     post_donate: 'Donează',
@@ -62,6 +65,9 @@ const translations = {
     post_minutes_ago: 'acum {n} min',
     post_hours_ago: 'acum {n} ore',
     post_days_ago: 'acum {n} zile',
+    post_edit_tags: 'Editează categorii',
+    post_add_tags: 'Adaugă categorii',
+    post_select_tags: 'Selectează categorii pentru această postare:',
  
     create_title: 'Postare nouă',
     create_placeholder: 'Scrie ce gândești aici...',
@@ -139,7 +145,7 @@ const translations = {
     chatbot_greeting: 'Salut! 👋 Eu sunt Barry, asistentul tău AI. Dacă vrei, te pot ajuta să îți personalizezi feed-ul :)',
     chatbot_current_interests: 'Interesele tale actuale sunt: {interests}.',
     chatbot_ask: 'Ce te interesează? Poți selecta categorii de mai jos sau scrie liber (de exemplu: "Îmi plac sportul și filmele").',
-    chatbot_select_tags: 'Selectează categorii de interes:',
+    chatbot_select_tags: 'Selectează interese:',
     chatbot_found_interests: 'Am înțeles! Am adăugat: {interests}.',
     chatbot_anything_else: 'Mai e ceva care te interesează? Poți selecta mai multe categorii sau scrie.',
     chatbot_not_understood: 'Nu am recunoscut un interes specific. Încearcă să selectezi din categoriile de mai jos, sau scrie cuvinte cheie simple ("sport", "filme", "muzica" etc.)',
@@ -195,8 +201,8 @@ const translations = {
     err_server_add_comment: 'Eroare la adăugarea comentariului',
     err_server_load_comments: 'Eroare la încărcarea comentariilor',
     err_server_delete_comment: 'Eroare la ștergerea comentariului',
-    err_invalid_interests: 'Format invalid pentru interese',
-
+    err_server_update_post: 'Eroare la actualizarea postării',
+    err_invalid: 'Format invalid',
   },
  
   en: {
@@ -205,7 +211,9 @@ const translations = {
     nav_logout: 'Log out',
     nav_login: 'Log in',
     nav_register: 'Sign up',
-    nav_chatbot: 'AI Assistant',
+    nav_chatbot: 'Customize',
+    nav_theme_light: '☀️ Light',
+    nav_theme_dark: '🌙 Dark',
  
     landing_title: 'Berries',
     landing_subtitle: 'A different kind of social platform, with no algorithms to manipulate.',
@@ -248,6 +256,7 @@ const translations = {
     feed_empty: 'No posts yet. Be the first to publish something!',
     feed_prev: '← Previous',
     feed_next: 'Next →',
+    feed_filtered_by: 'Personalized for your interests',
  
     post_comments: 'Comments',
     post_donate: 'Donate',
@@ -258,7 +267,10 @@ const translations = {
     post_minutes_ago: '{n} min ago',
     post_hours_ago: '{n} hours ago',
     post_days_ago: '{n} days ago',
- 
+    post_edit_tags: 'Edit categories',
+    post_add_tags: 'Add categories',
+    post_select_tags: 'Select categories for this post:',
+
     create_title: 'New post',
     create_placeholder: 'Write your thoughts here...',
     create_what: 'What do you have to say?',
@@ -335,7 +347,7 @@ const translations = {
     chatbot_greeting: 'Hi! 👋 I\'m Barry, your AI assistant. If you want, I can help you personalize your feed :)',
     chatbot_current_interests: 'Your current interests are: {interests}.',
     chatbot_ask: 'What are you interested in? You can select categories below or type freely (e.g. "I like sports and movies").',
-    chatbot_select_tags: 'Select interest categories:',
+    chatbot_select_tags: 'Select interests:',
     chatbot_found_interests: 'Got it! I added: {interests}.',
     chatbot_anything_else: 'Anything else you are interested in? You can select more categories or type.',
     chatbot_not_understood: 'I did not recognize a specific interest. Try selecting from the categories below, or type simple keywords ("sport", "movies", "music" etc.)',
@@ -391,8 +403,8 @@ const translations = {
     err_server_add_comment: 'Error adding comment',
     err_server_load_comments: 'Error loading comments',
     err_server_delete_comment: 'Error deleting comment',
-    err_invalid_interests: 'Invalid interests format',
-
+    err_server_update_post: 'Error updating post',
+    err_invalid: 'Invalid format',
   }
 };
  
@@ -400,6 +412,14 @@ export function LanguageProvider({ children }) {
   const [lang, setLang] = useState(() => {
     return localStorage.getItem('berries_lang') || 'ro';
   });
+ 
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('berries_theme') || 'light';
+  });
+ 
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
  
   const toggleLanguage = useCallback(() => {
     setLang(prev => {
@@ -409,9 +429,17 @@ export function LanguageProvider({ children }) {
     });
   }, []);
  
+  const toggleTheme = useCallback(() => {
+    setTheme(prev => {
+      const next = prev === 'light' ? 'dark' : 'light';
+      localStorage.setItem('berries_theme', next);
+      return next;
+    });
+  }, []);
+ 
   const t = useCallback((key, params = {}) => {
     if (!key) return '';
-    // Pt 2 erori
+    // Pt erori multiple
     if (key.includes('. ')) {
       return key.split('. ').map(k => {
         let text = translations[lang]?.[k.trim()] || translations['ro']?.[k.trim()] || k.trim();
@@ -429,7 +457,7 @@ export function LanguageProvider({ children }) {
   }, [lang]);
  
   return (
-    <LanguageContext.Provider value={{ lang, toggleLanguage, t }}>
+    <LanguageContext.Provider value={{ lang, toggleLanguage, t, theme, toggleTheme }}>
       {children}
     </LanguageContext.Provider>
   );

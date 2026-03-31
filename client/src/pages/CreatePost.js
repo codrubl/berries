@@ -92,7 +92,7 @@ export default function CreatePost() {
                   padding: '0.35rem 0.8rem',
                   borderRadius: 'var(--radius-full)',
                   border: selectedTags.includes(tag) ? '2px solid var(--berry-500)' : '2px solid var(--ink-200)',
-                  background: selectedTags.includes(tag) ? 'var(--berry-50)' : 'white',
+                  background: selectedTags.includes(tag) ? 'var(--berry-50)' : 'var(--ink-50)',
                   color: selectedTags.includes(tag) ? 'var(--berry-700)' : 'var(--ink-600)',
                   fontSize: '0.85rem',
                   fontWeight: selectedTags.includes(tag) ? 600 : 400,
