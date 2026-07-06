@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import Avatar from '../components/Avatar';
 import PostCard from '../components/PostCard';
+import { connectWallet } from '../utils/web3';
  
 const API_BASE = process.env.REACT_APP_API_URL || '';
  
@@ -58,6 +59,17 @@ export default function Account() {
       setMessage({ type: 'error', text: err.message });
     }
     setSaveLoading(false);
+  };
+
+  const handleConnectWallet = async () => {
+    try {
+      const address = await connectWallet();
+      setWalletAddress(address);
+      setMessage({ type: 'success', text: 'account_wallet_connected' });
+    } catch (err) {
+      if (err && err.code === 4001) return;
+      setMessage({ type: 'error', text: 'donate_err_no_metamask' });
+    }
   };
  
   const handleAvatarChange = async (e) => {
@@ -161,8 +173,15 @@ export default function Account() {
               </div>
               <div className="form-group">
                 <label className="form-label">{t('account_wallet')}</label>
-                <input type="text" className="form-input" value={walletAddress}
-                  onChange={(e) => setWalletAddress(e.target.value)} placeholder="0x..." />
+                <div style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'stretch' }}>
+                  <input type="text" className="form-input" value={walletAddress}
+                    onChange={(e) => setWalletAddress(e.target.value)} placeholder="0x..."
+                    style={{ flex: 1 }} />
+                  <button type="button" className="btn btn--secondary btn--small"
+                    onClick={handleConnectWallet}>
+                    {t('account_connect_wallet')}
+                  </button>
+                </div>
                 <p style={{ fontSize: '0.8rem', color: 'var(--ink-400)', marginTop: 'var(--space-xs)' }}>
                   {t('account_wallet_hint')}
                 </p>

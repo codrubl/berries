@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import Avatar from '../components/Avatar';
 import CommentSection from '../components/CommentSection';
+import DonateModal from '../components/DonateModal';
  
 const API_BASE = process.env.REACT_APP_API_URL || '';
  
@@ -28,8 +29,7 @@ export default function ViewPost() {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
- 
-  // Tag editing state
+  const [showDonate, setShowDonate] = useState(false);
   const [editingTags, setEditingTags] = useState(false);
   const [editTags, setEditTags] = useState([]);
   const [savingTags, setSavingTags] = useState(false);
@@ -221,7 +221,7 @@ export default function ViewPost() {
                 <span className="wallet-badge">
                   🔗 {post.author.walletAddress.slice(0, 6)}...{post.author.walletAddress.slice(-4)}
                 </span>
-                <button className="btn btn--primary btn--small" disabled>{t('post_donate_soon')}</button>
+                <button className="btn btn--primary btn--small" onClick={() => setShowDonate(true)}>{t('post_donate')}</button>
               </div>
             </div>
           )}
@@ -231,6 +231,13 @@ export default function ViewPost() {
           </div>
         </div>
       </article>
+      {showDonate && (
+        <DonateModal
+          recipientAddress={post.author.walletAddress}
+          recipientUsername={post.author.username}
+          onClose={() => setShowDonate(false)}
+        />
+      )}
     </div>
   );
 }
