@@ -1,16 +1,9 @@
-// client/src/components/DonateModal.js
-//
-// Fereastră modală de donație. Se potrivește la sistemul de design Berries:
-// folosește clasele existente (card, btn, wallet-badge, alert) și variabilele CSS,
-// deci respectă automat și modul întunecat.
-
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { sendDonation, sepoliaTxUrl, isMetaMaskInstalled } from '../utils/web3';
 
 const PRESETS = ['0.001', '0.01', '0.05'];
 
-// Mapează erorile cunoscute din web3.js la chei de traducere
 const ERROR_KEYS = {
   err_no_metamask: 'donate_err_no_metamask',
   err_invalid_amount: 'donate_err_invalid_amount',
@@ -47,7 +40,6 @@ export default function DonateModal({ recipientAddress, recipientUsername, onClo
       setTxHash(hash);
       setStatus('success');
     } catch (err) {
-      // Utilizatorul a refuzat în MetaMask (conectare, comutare rețea sau tranzacție)
       if (err && (err.code === 4001 || err.code === 'ACTION_REJECTED')) {
         setStatus('idle');
         return;

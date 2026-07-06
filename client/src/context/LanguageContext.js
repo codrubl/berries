@@ -480,7 +480,6 @@ export function LanguageProvider({ children }) {
  
   const t = useCallback((key, params = {}) => {
     if (!key) return '';
-    // Pt erori multiple
     if (key.includes('. ')) {
       return key.split('. ').map(k => {
         let text = translations[lang]?.[k.trim()] || translations['ro']?.[k.trim()] || k.trim();

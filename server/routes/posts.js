@@ -65,7 +65,6 @@ router.get('/', optionalAuth, async (req, res) => {
         totalPosts: total
       });
     } else {
-      // No interests: pure chronological feed
       posts = await Post.find()
         .sort({ createdAt: -1 })
         .skip(skip)

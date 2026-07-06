@@ -45,7 +45,6 @@ export default function Chatbot() {
   const messagesEndRef = useRef(null);
  
   useEffect(() => {
-    // Initial bot message
     const initial = [
       { from: 'bot', text: t('chatbot_greeting') },
     ];
@@ -84,11 +83,9 @@ export default function Chatbot() {
     setMessages(prev => [...prev, { from: 'user', text: userText }]);
     setInput('');
  
-    // Parse interests from text
     const found = parseInterestsFromText(userText);
  
     if (found.length > 0) {
-      // Add found interests
       setSelectedInterests(prev => {
         const combined = [...new Set([...prev, ...found])];
         return combined;
