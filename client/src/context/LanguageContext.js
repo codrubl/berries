@@ -86,7 +86,6 @@ const translations = {
     post_not_found: 'Postarea nu a fost găsită',
     post_donate_title: 'Donează crypto direct către {username}',
     post_donate_desc: 'Trimite o donație crypto direct în portofelul creatorului.',
-    post_donate_soon: '💸 Donează (în curând)',
 
     donate_title: 'Donează către {username}',
     donate_network_note: 'Tranzacție pe rețeaua de test Sepolia — nu implică bani reali.',
@@ -309,7 +308,7 @@ const translations = {
     post_not_found: 'Post not found',
     post_donate_title: 'Donate crypto directly to {username}',
     post_donate_desc: 'Send a crypto donation directly to the creator\'s wallet.',
-    post_donate: '💸 Donate',
+    post_donate: 'Donate',
 
     donate_title: 'Donate to {username}',
     donate_network_note: 'Transaction on the Sepolia test network — no real money involved.',
