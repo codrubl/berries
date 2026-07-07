@@ -20,7 +20,7 @@ function useTimeAgo() {
 }
  
 export default function PostCard({ post, onDelete }) {
-  const { user, token } = useAuth();
+  const { user, token, isAuthenticated } = useAuth();
   const { t } = useLanguage();
   const timeAgo = useTimeAgo();
   const isOwner = user && post.author && user._id === post.author._id;
@@ -85,7 +85,7 @@ export default function PostCard({ post, onDelete }) {
         <Link to={`/post/${post._id}`} className="btn btn--ghost btn--small">
           💬 {t('post_comments')}
         </Link>
-        {post.author?.walletAddress && !isOwner && (
+        {post.author?.walletAddress && isAuthenticated && !isOwner && (
           <Link to={`/post/${post._id}`} className="btn btn--ghost btn--small">
             💸 {t('post_donate')}
           </Link>
