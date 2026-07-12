@@ -34,7 +34,7 @@ export default function Login() {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="form-label" htmlFor="email">{t('login_email')}</label>
-            <input id="email" type="email" className="form-input" placeholder="adresa@email.com"
+            <input id="email" type="email" className="form-input" placeholder="berries@email.com"
               value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
           <div className="form-group">
