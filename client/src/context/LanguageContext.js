@@ -88,7 +88,7 @@ const translations = {
     post_donate_desc: 'Trimite o donație crypto direct în portofelul creatorului.',
 
     donate_title: 'Donează către {username}',
-    donate_network_note: 'Tranzacție pe rețeaua de test Sepolia — nu implică bani reali.',
+    donate_network_note: 'Tranzacție pe rețeaua de test Sepolia.',
     donate_amount_label: 'Sumă',
     donate_confirm: 'Trimite donația',
     donate_sending: 'Se trimite... confirmă în MetaMask',
@@ -311,7 +311,7 @@ const translations = {
     post_donate: 'Donate',
 
     donate_title: 'Donate to {username}',
-    donate_network_note: 'Transaction on the Sepolia test network — no real money involved.',
+    donate_network_note: 'Transaction on the Sepolia test network.',
     donate_amount_label: 'Amount',
     donate_confirm: 'Send donation',
     donate_sending: 'Sending... confirm in MetaMask',
