@@ -45,14 +45,14 @@ Berries este o aplicație web full-stack construită pe stack-ul **MERN** (Mongo
 ## Stack tehnologic
 
 **Frontend**
-- React 18
-- React Router 6
-- ethers.js v6 (pentru interacțiune cu MetaMask / blockchain)
+- React
+- React Router
+- ethers.js (pentru interacțiune cu MetaMask / blockchain)
 - CSS
 
 **Backend**
-- Node.js + Express 4
-- Mongoose 8
+- Node.js + Express
+- Mongoose
 - JSON Web Token (`jsonwebtoken`) pentru autentificare
 - `bcryptjs` pentru hashing-ul parolelor
 - `multer` pentru upload de fișiere
@@ -63,7 +63,6 @@ Berries este o aplicație web full-stack construită pe stack-ul **MERN** (Mongo
 **Blockchain**
 - MetaMask (extensie de browser)
 - Rețeaua de test Ethereum **Sepolia** (Chain ID `11155111`)
-- Transfer Peer2Peer direct de cryptomonede
 
 ---
 
