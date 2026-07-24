@@ -67,7 +67,7 @@ export default function Feed() {
         <div className="loading-spinner"><div className="loading-spinner__circle" /></div>
       ) : posts.length === 0 ? (
         <div className="empty-state">
-          <div className="empty-state__icon">🫐</div>
+          <div className="empty-state__icon">✎</div>
           <p>{t('feed_empty')}</p>
         </div>
       ) : (
